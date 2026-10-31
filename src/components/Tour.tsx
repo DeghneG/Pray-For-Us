@@ -62,6 +62,7 @@ export function Tour({ startAt, onClose }: Props) {
   const card = useRef<HTMLDivElement>(null)
   const hadItem = useRef(false)
   const advanced = useRef(false)
+  const [ok, setOk] = useState(false) // the step's action just happened: show a beat of confirmation before moving on
   const open = startAt !== null
 
   const steps = useMemo<Step[]>(
@@ -174,6 +175,7 @@ export function Tour({ startAt, onClose }: Props) {
   useEffect(() => {
     if (!open) return
     advanced.current = false
+    setOk(false)
     s.enter?.()
     if (s.pathOk && s.go && !s.pathOk(window.location.pathname)) navigate(s.go)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -212,7 +214,8 @@ export function Tour({ startAt, onClose }: Props) {
     const t = window.setInterval(() => {
       if (!advanced.current && s.done!()) {
         advanced.current = true
-        window.setTimeout(() => setStep((n) => Math.min(steps.length - 1, n + 1)), 650)
+        setOk(true)
+        window.setTimeout(() => setStep((n) => Math.min(steps.length - 1, n + 1)), 1800)
       }
     }, 250)
     return () => window.clearInterval(t)
@@ -236,7 +239,7 @@ export function Tour({ startAt, onClose }: Props) {
 
   useEffect(() => {
     if (!open || !card.current) return
-    gsap.fromTo(card.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power3.out', clearProps: 'opacity,transform' })
+    gsap.fromTo(card.current, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', clearProps: 'opacity,transform' })
   }, [step, open])
 
   if (!open) return null
@@ -248,8 +251,9 @@ export function Tour({ startAt, onClose }: Props) {
     if (advanced.current) return // already moving on (the visitor did the step themselves)
     advanced.current = true
     cur.act?.()
-    // let the real click land (page change, drawer opening) before the next step reads the page
-    window.setTimeout(() => setStep((n) => Math.min(steps.length - 1, n + 1)), cur.act ? 350 : 0)
+    // let the real click land and stay visible before the next card appears
+    if (cur.act) setOk(true)
+    window.setTimeout(() => setStep((n) => Math.min(steps.length - 1, n + 1)), cur.act ? 1600 : 0)
   }
 
   const pad = 8
@@ -279,7 +283,7 @@ export function Tour({ startAt, onClose }: Props) {
         <div className="absolute inset-0 bg-black/70" />
       ) : (
         <div
-          className="absolute rounded-sm border-2 border-peri transition-[left,top,width,height] duration-300 motion-reduce:transition-none"
+          className="absolute rounded-sm border-2 border-peri transition-[left,top,width,height] duration-700 ease-in-out motion-reduce:transition-none"
           style={{ ...hole, boxShadow: '0 0 0 100vmax rgba(5,5,10,0.78), 0 0 28px 4px rgba(92,108,242,0.7)' }}
         />
       )}
@@ -294,7 +298,13 @@ export function Tour({ startAt, onClose }: Props) {
         </div>
         <h2 className="h-display mt-2 text-3xl">{s.title}</h2>
         <p className="mt-2 text-sm text-bone/85">{s.body}</p>
-        {s.hint && <p className="mt-2 font-mono text-xs text-peri-light">{s.hint}</p>}
+        {ok ? (
+          <p className="mt-2 font-mono text-xs text-peri-light" role="status">
+            ✓ Done. One moment…
+          </p>
+        ) : (
+          s.hint && <p className="mt-2 font-mono text-xs text-peri-light">{s.hint}</p>
+        )}
         {!s.center && (
           <div className="mt-3 flex gap-1" aria-hidden="true">
             {Array.from({ length: total }).map((_, i) => (
@@ -310,7 +320,7 @@ export function Tour({ startAt, onClose }: Props) {
           ) : (
             <span />
           )}
-          <button className="btn btn-peri !px-5 !py-1.5 !text-base" onClick={next}>
+          <button className="btn btn-peri !px-5 !py-1.5 !text-base" onClick={next} disabled={ok}>
             {s.nextLabel ?? 'Next'}
           </button>
         </div>
