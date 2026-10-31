@@ -105,6 +105,9 @@ export function Layout() {
 
           <div className="flex items-center gap-2">
             <SocialLinks className="hidden lg:flex" />
+            <Link to="/admin" className="chip hidden !border-peri !text-peri-light hover:!bg-peri hover:!text-white sm:inline-block">
+              Owner login
+            </Link>
             <button className="btn btn-ghost !px-4 !py-2 !text-base" onClick={() => setOpen(true)} aria-label={`Open order bag, ${totals.count} items`}>
               Bag
               <span className="bg-peri px-1.5 font-mono text-xs text-white">{totals.count}</span>
@@ -122,6 +125,14 @@ export function Layout() {
               </NavLink>
             ))}
             <SocialLinks className="pt-4" />
+            <div className="flex flex-wrap gap-2 pt-4">
+              <Link to="/admin" className="btn btn-peri !px-4 !py-2 !text-base">
+                Owner login
+              </Link>
+              <Link to="/admin/preview" className="btn btn-ghost !px-4 !py-2 !text-base">
+                Mobile preview
+              </Link>
+            </div>
           </nav>
         )}
       </header>
@@ -164,9 +175,14 @@ export function Layout() {
             <p className="font-mono text-sm text-bone/70">
               Post your fit with <span className="text-peri-light">#PrayForUs</span> and tag {LINKS.igHandle} to join the Congregation.
             </p>
-            <Link to="/admin" className="mt-6 inline-block font-mono text-[11px] uppercase tracking-widest text-bone/30 hover:text-bone/60">
-              Admin (demo)
-            </Link>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <Link to="/admin" className="btn btn-ghost !px-4 !py-2 !text-base">
+                Owner dashboard
+              </Link>
+              <Link to="/admin/preview" className="btn btn-ghost !px-4 !py-2 !text-base">
+                Mobile preview
+              </Link>
+            </div>
           </div>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-bone/10 px-4 py-4 text-center font-mono text-[11px] uppercase tracking-widest text-bone/40">
