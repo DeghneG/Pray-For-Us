@@ -66,7 +66,6 @@ export function Preloader() {
 
       tl = gsap.timeline({ onComplete: () => gsap.delayedCall(0.4, leave) })
       tl.fromTo(q('.pl-base'), { scale: 0.6, opacity: 0, rotate: -4, transformOrigin: '50% 50%' }, { scale: 1, opacity: 1, rotate: 0, duration: 0.8, ease: 'back.out(1.5)' }, 0)
-        .fromTo(q('.pl-bar'), { scaleX: 0 }, { scaleX: 1, duration: 2.7, ease: 'none', transformOrigin: '0 50%' }, 0)
 
       const order = gsap.utils.shuffle(nails.map((_, i) => i))
       order.forEach((idx, n) => {
@@ -131,12 +130,7 @@ export function Preloader() {
         </div>
       </div>
 
-      <div className="mt-8 w-[min(70vw,360px)]">
-        <div className="h-[3px] w-full bg-bone/15">
-          <div className="pl-bar h-full w-full origin-left scale-x-0 bg-peri" />
-        </div>
-        <p className="mt-3 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-bone/60">Pray for us</p>
-      </div>
+      <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-bone/60">Pray for us</p>
 
       <button
         type="button"

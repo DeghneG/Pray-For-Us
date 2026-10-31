@@ -5,7 +5,7 @@ import { LINKS } from '../data/products'
 import { BagDrawer } from './BagDrawer'
 import { ThornDivider } from './bits'
 import { Chat } from './Chat'
-import { Marquee, MotionToggle } from './Marquee'
+import { MotionToggle } from './Marquee'
 import { SocialLinks } from './Social'
 
 const nav = [
@@ -25,23 +25,20 @@ const wordmarks = [
   'font-mono font-bold tracking-[0.25em] text-[13px]',
 ]
 
+// Static, not a carousel. Twelve wordmarks sit in a single row that is clipped to one line, so exactly as many
+// as fit are shown and justify-between spreads them edge to edge at any screen width.
 function WordmarkStrip() {
   return (
-    <div className="bg-coal py-1.5 text-bone/75" role="img" aria-label="Pray For Us">
-      <Marquee speed={38} pauseOnHover={false}>
-        {(ghost) => (
-          <div className="flex items-center whitespace-nowrap" data-ghost={ghost}>
-            {Array.from({ length: 4 }).flatMap((_, round) =>
-              wordmarks.map((cls, i) => (
-                <span key={`${round}-${i}`} aria-hidden="true" className={`${cls} px-5 uppercase leading-none`}>
-                  Pray for us
-                  <span className="pl-10 text-peri/70">✦</span>
-                </span>
-              )),
-            )}
-          </div>
+    <div className="h-9 overflow-hidden bg-coal px-4 text-bone/75" role="img" aria-label="Pray For Us">
+      <div className="flex h-9 flex-wrap items-center justify-between gap-x-4 overflow-hidden" aria-hidden="true">
+        {Array.from({ length: 2 }).flatMap((_, round) =>
+          wordmarks.map((cls, i) => (
+            <span key={`${round}-${i}`} className={`${cls} h-9 whitespace-nowrap uppercase leading-9`}>
+              Pray for us
+            </span>
+          )),
         )}
-      </Marquee>
+      </div>
     </div>
   )
 }

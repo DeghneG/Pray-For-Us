@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Reveal } from '../components/Reveal'
 import { SocialLinks } from '../components/Social'
-import { ownerBattles, ownerFacts, ownerIntro, ownerMilestones, ownerSections, ownerStyle } from '../data/owner'
+import { ownerBattles, ownerFacts, ownerMilestones, ownerSections, ownerStyle } from '../data/owner'
 import { img } from '../data/products'
 
 export default function About() {
@@ -10,21 +10,13 @@ export default function About() {
       <section className="mx-auto max-w-4xl px-4 pt-12">
         <p className="label">The brand</p>
         <h1 className="h-display text-6xl md:text-8xl">About</h1>
-        <p className="font-fang mt-8 text-4xl leading-tight md:text-5xl">Do you believe in divine intervention?</p>
-        <Reveal group intro className="mt-8 space-y-5 text-lg text-bone/80">
-          <p>
-            Pray For Us is Filipino hip-hop streetwear. Faith and the street in one frame: a crown of thorns done as barbed wire, a prayer said out loud, a message you can wear.
-          </p>
-          <p>
-            It's made by Saint Ice, an emcee from Parañaque. After years in the battle scene, he stepped away, came back, and put the weight of it into clothes.
-          </p>
-          <p>
-            Every drop is small on purpose. Heavy tees, hats, a hoodie, stickers. Some pieces come back, some never do.
-          </p>
+        <p className="font-fang mt-6 text-4xl leading-tight md:text-5xl">Do you believe in divine intervention?</p>
+        <Reveal intro className="mt-6 max-w-2xl text-lg text-bone/80">
+          <p>Filipino hip-hop streetwear. Faith and the street in one frame: a crown of thorns done as barbed wire, a message you can wear. Every drop is small on purpose.</p>
         </Reveal>
       </section>
 
-      <Reveal as="section" className="mx-auto mt-16 max-w-4xl px-4">
+      <Reveal as="section" className="mx-auto mt-14 max-w-4xl px-4">
         <p className="label">The man behind it</p>
         <h2 className="h-display text-5xl md:text-6xl">Saint Ice</h2>
         <div className="mt-8 grid items-center gap-8 md:grid-cols-[1fr_1.1fr]">
@@ -33,7 +25,7 @@ export default function About() {
               <div className="arch" style={{ aspectRatio: '3 / 4' }}>
                 <img src={img('owner-1', 'lg')} alt="Saint Ice at a FlipTop event, fist raised, wearing the Prodigal Son tee" className="h-full w-full object-cover object-top" loading="lazy" />
               </div>
-              <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-wider text-bone/50">Unibersikulo 13 · Photo: Nina Sandejas / FlipTop</figcaption>
+              <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-wider text-bone/50">Unibersikulo 13 · Nina Sandejas / FlipTop</figcaption>
             </figure>
             <figure className="mt-8">
               <div className="arch" style={{ aspectRatio: '3 / 4' }}>
@@ -42,9 +34,11 @@ export default function About() {
               <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-wider text-bone/50">Balentong 12 · FlipTop</figcaption>
             </figure>
           </div>
-          <div className="space-y-4 text-lg text-bone/80">
-            <p className="font-fang text-3xl leading-tight text-bone">Founder of Pray For Us.</p>
-            <p className="text-base leading-relaxed">{ownerIntro}</p>
+          <div className="space-y-4">
+            <p className="font-fang text-3xl leading-tight">Founder of Pray For Us.</p>
+            <p className="text-lg text-bone/80">
+              A veteran FlipTop battle rapper from Parañaque City, formerly Ice Rocks. He stepped away to focus on music and MMA, then returned in 2024 in a comeback the league counts among its best.
+            </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link to="/product/prodigal-son-tee" className="btn btn-peri">
                 His tee: Prodigal Son
@@ -55,10 +49,7 @@ export default function About() {
         </div>
       </Reveal>
 
-      <section className="mx-auto mt-14 max-w-4xl px-4" aria-labelledby="profile-heading">
-        <h3 id="profile-heading" className="sr-only">
-          Saint Ice profile
-        </h3>
+      <section className="mx-auto mt-12 max-w-4xl px-4" aria-label="Saint Ice at a glance">
         <Reveal group>
           <dl className="grid grid-cols-2 gap-px border border-bone/15 bg-bone/15 md:grid-cols-5">
             {ownerFacts.map((f) => (
@@ -70,52 +61,61 @@ export default function About() {
           </dl>
         </Reveal>
 
-        <Reveal group className="mt-12 space-y-8">
-          {ownerSections.map((s) => (
-            <article key={s.title}>
-              <h3 className="h-display text-3xl md:text-4xl">{s.title}</h3>
-              <p className="mt-3 text-lg leading-relaxed text-bone/80">{s.body}</p>
-            </article>
-          ))}
-        </Reveal>
-
-        <div className="mt-14">
-          <h3 className="h-display text-3xl md:text-4xl">Style and mastery</h3>
-          <Reveal group as="ul" className="mt-5 grid gap-4 md:grid-cols-3">
-            {ownerStyle.map((s) => (
-              <li key={s.title} className="border border-bone/15 bg-coal p-5">
-                <h4 className="font-display text-2xl uppercase">{s.title}</h4>
-                <p className="mt-2 text-bone/75">{s.body}</p>
-              </li>
-            ))}
-          </Reveal>
-        </div>
-
-        <div className="mt-14 grid gap-10 md:grid-cols-2">
+        <div className="mt-10 grid gap-10 md:grid-cols-2">
           <div>
-            <h3 className="h-display text-3xl md:text-4xl">Milestones</h3>
-            <Reveal group as="ol" className="mt-5 space-y-0 border-l-2 border-peri">
+            <h3 className="h-display text-3xl">Milestones</h3>
+            <Reveal group as="ol" className="mt-4 border-l-2 border-peri">
               {ownerMilestones.map((m) => (
-                <li key={m.year} className="relative pb-6 pl-6 last:pb-0">
-                  <span className="absolute -left-[7px] top-1.5 h-3 w-3 bg-peri" aria-hidden="true" />
-                  <span className="font-display text-2xl text-peri-light">{m.year}</span>
-                  <p className="text-bone/80">{m.text}</p>
+                <li key={m.year} className="relative pb-4 pl-6 last:pb-0">
+                  <span className="absolute -left-[7px] top-2 h-3 w-3 bg-peri" aria-hidden="true" />
+                  <span className="font-display text-xl text-peri-light">{m.year}</span>
+                  <span className="ml-3 text-bone/80">{m.text}</span>
                 </li>
               ))}
             </Reveal>
           </div>
           <div>
-            <h3 className="h-display text-3xl md:text-4xl">Key battles</h3>
-            <Reveal group as="ul" className="mt-5 space-y-3">
+            <h3 className="h-display text-3xl">Key battles</h3>
+            <Reveal group as="ul" className="mt-4 space-y-2">
               {ownerBattles.map((b) => (
-                <li key={b.title} className="border border-bone/15 p-4">
-                  <p className="font-display text-xl uppercase leading-tight">{b.title}</p>
-                  <p className="mt-1 text-sm text-bone/70">{b.note}</p>
+                <li key={b.title} className="border border-bone/15 px-4 py-3 font-display text-lg uppercase leading-tight">
+                  {b.title}
                 </li>
               ))}
             </Reveal>
           </div>
         </div>
+
+        <details className="group mt-10 border border-bone/20">
+          <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 font-mono text-xs uppercase tracking-[0.2em] hover:text-peri-light">
+            <span>Read the full profile</span>
+            <span className="text-lg group-open:hidden" aria-hidden="true">
+              +
+            </span>
+            <span className="hidden text-lg group-open:inline" aria-hidden="true">
+              −
+            </span>
+          </summary>
+          <div className="space-y-8 border-t border-bone/20 p-5">
+            {ownerSections.map((s) => (
+              <article key={s.title}>
+                <h4 className="h-display text-2xl md:text-3xl">{s.title}</h4>
+                <p className="mt-2 text-bone/80">{s.body}</p>
+              </article>
+            ))}
+            <div>
+              <h4 className="h-display text-2xl md:text-3xl">Style and mastery</h4>
+              <ul className="mt-3 grid gap-3 md:grid-cols-3">
+                {ownerStyle.map((s) => (
+                  <li key={s.title} className="border border-bone/15 bg-coal p-4">
+                    <p className="font-display text-xl uppercase">{s.title}</p>
+                    <p className="mt-1 text-sm text-bone/75">{s.body}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </details>
       </section>
 
       <Reveal as="section" className="mx-auto mt-20 grid max-w-4xl gap-6 px-4 md:grid-cols-2">
