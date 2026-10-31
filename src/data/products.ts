@@ -317,6 +317,6 @@ export const peso = (n: number) => `₱${n.toLocaleString('en-PH')}`
 export const LINKS = {
   messenger: 'https://m.me/61576716543998',
   facebook: 'https://www.facebook.com/profile.php?id=61576716543998',
-  instagram: 'https://instagram.com/prayforusprayforus',
+  instagram: 'https://www.instagram.com/prayforusprayforus/',
   igHandle: '@prayforusprayforus',
 }

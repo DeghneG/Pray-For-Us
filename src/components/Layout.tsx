@@ -4,7 +4,9 @@ import { useBag } from '../lib/bag'
 import { LINKS } from '../data/products'
 import { BagDrawer } from './BagDrawer'
 import { ThornDivider } from './bits'
-import { MotionToggle } from './Marquee'
+import { Chat } from './Chat'
+import { Marquee, MotionToggle } from './Marquee'
+import { SocialLinks } from './Social'
 
 const nav = [
   { to: '/shop', label: 'Shop' },
@@ -13,23 +15,42 @@ const nav = [
   { to: '/about', label: 'About' },
 ]
 
-// The top strip: the brand name set in six different typefaces.
+// The top strip: the brand name set in six different typefaces, repeated edge to edge.
 const wordmarks = [
-  { cls: 'font-display tracking-widest' },
-  { cls: 'font-fang normal-case tracking-wide text-[18px]' },
-  { cls: 'font-marker tracking-wide' },
-  { cls: 'font-typewriter tracking-widest' },
-  { cls: 'font-bungee tracking-wider text-[13px]' },
-  { cls: 'font-mono font-bold tracking-[0.25em] text-[13px]' },
+  'font-display tracking-widest text-[16px]',
+  'font-fang normal-case tracking-wide text-[20px]',
+  'font-marker tracking-wide text-[16px]',
+  'font-typewriter tracking-widest text-[15px]',
+  'font-bungee tracking-wider text-[14px]',
+  'font-mono font-bold tracking-[0.25em] text-[13px]',
 ]
+
+function WordmarkStrip() {
+  return (
+    <div className="bg-coal py-1.5 text-bone/75" role="img" aria-label="Pray For Us">
+      <Marquee speed={38} pauseOnHover={false}>
+        {(ghost) => (
+          <div className="flex items-center whitespace-nowrap" data-ghost={ghost}>
+            {Array.from({ length: 4 }).flatMap((_, round) =>
+              wordmarks.map((cls, i) => (
+                <span key={`${round}-${i}`} aria-hidden="true" className={`${cls} px-5 uppercase leading-none`}>
+                  Pray for us
+                  <span className="pl-10 text-peri/70">✦</span>
+                </span>
+              )),
+            )}
+          </div>
+        )}
+      </Marquee>
+    </div>
+  )
+}
 
 function BackButton() {
   const navigate = useNavigate()
-  // react-router stores the position in the history stack; at 0 there is nothing to go back to.
-  const canGoBack = (window.history.state?.idx ?? 0) > 0
   return (
     <div className="mx-auto max-w-6xl px-4 pt-6">
-      <button type="button" onClick={() => (canGoBack ? navigate(-1) : navigate('/'))} className="chip inline-flex items-center gap-2">
+      <button type="button" onClick={() => navigate('/')} aria-label="Back to the home page" className="chip inline-flex items-center gap-2">
         <span aria-hidden="true">←</span> Back
       </button>
     </div>
@@ -61,13 +82,7 @@ export function Layout() {
   return (
     <div className="grain">
       <ScrollToTop />
-      <div className="flex items-center justify-center gap-5 overflow-hidden bg-coal px-4 py-1.5 text-bone/70" aria-label="Pray For Us">
-        {wordmarks.map((w, i) => (
-          <span key={w.cls} aria-hidden="true" className={`${w.cls} ${i > 2 ? 'hidden sm:inline' : ''} ${i > 4 ? 'md:inline' : ''} whitespace-nowrap text-[15px] uppercase leading-none`}>
-            Pray for us
-          </span>
-        ))}
-      </div>
+      <WordmarkStrip />
 
       <header className="sticky top-0 z-50 border-b border-bone/10 bg-ink/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
@@ -90,16 +105,12 @@ export function Layout() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <SocialLinks className="hidden lg:flex" />
             <button className="btn btn-ghost !px-4 !py-2 !text-base" onClick={() => setOpen(true)} aria-label={`Open order bag, ${totals.count} items`}>
               Bag
               <span className="bg-peri px-1.5 font-mono text-xs text-white">{totals.count}</span>
             </button>
-            <button
-              className="chip md:hidden"
-              aria-expanded={menu}
-              aria-controls="mobile-nav"
-              onClick={() => setMenu((m) => !m)}
-            >
+            <button className="chip md:hidden" aria-expanded={menu} aria-controls="mobile-nav" onClick={() => setMenu((m) => !m)}>
               {menu ? 'Close' : 'Menu'}
             </button>
           </div>
@@ -111,6 +122,7 @@ export function Layout() {
                 {n.label}
               </NavLink>
             ))}
+            <SocialLinks className="pt-4" />
           </nav>
         )}
       </header>
@@ -129,6 +141,7 @@ export function Layout() {
           </div>
           <div>
             <h2 className="label mb-3">Find us</h2>
+            <SocialLinks className="mb-4" />
             <ul className="space-y-2 font-mono text-sm">
               <li>
                 <a className="hover:text-peri-light" href={LINKS.facebook} target="_blank" rel="noopener noreferrer">
@@ -165,6 +178,7 @@ export function Layout() {
       </footer>
 
       <BagDrawer />
+      <Chat />
     </div>
   )
 }

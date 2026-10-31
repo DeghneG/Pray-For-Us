@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ElementType, type ReactNode } from 'react'
 import gsap from 'gsap'
+import { introState, onIntroDone } from '../lib/intro'
 import { useMotion } from '../lib/motion'
 
 interface Props {
@@ -43,8 +44,17 @@ export function Reveal({ children, className, id, as: Tag = 'div', group = false
 
     if (intro) {
       gsap.set(targets, { opacity: 0, y: dist })
-      play()
+      let cancelled = false
+      const go = () => {
+        if (!cancelled) play()
+      }
+      // On the first load, wait for the opening loader to finish so the page-top animation is actually seen.
+      let off = () => {}
+      if (introState.done) go()
+      else off = onIntroDone(go)
       return () => {
+        cancelled = true
+        off()
         gsap.killTweensOf(targets)
         gsap.set(targets, { clearProps: 'opacity,transform' })
       }
