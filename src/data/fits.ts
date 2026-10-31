@@ -14,6 +14,10 @@ export interface Fit {
   sizeWorn?: string
   /** photo is wider than tall */
   landscape?: boolean
+  /** CSS object-position for the arch crop, so the wearer stays in frame. */
+  focus?: string
+  /** Zoom in from the top so a broadcast name bar at the bottom of the still is cropped out. */
+  hideBar?: boolean
 }
 
 export const fits: Fit[] = [
@@ -46,6 +50,8 @@ export const fits: Fit[] = [
     credit: 'FlipTop',
     items: ['nite-tee'],
     landscape: true,
+    focus: '78% 0%',
+    hideBar: true,
   },
   {
     id: 'si7ick',
@@ -56,6 +62,8 @@ export const fits: Fit[] = [
     credit: 'FlipTop',
     items: ['444-tee'],
     landscape: true,
+    focus: '86% 0%',
+    hideBar: true,
   },
   {
     id: 'jabo',
@@ -66,6 +74,8 @@ export const fits: Fit[] = [
     credit: 'FlipTop',
     items: ['black-widow-tee'],
     landscape: true,
+    focus: '14% 0%',
+    hideBar: true,
   },
   {
     id: 'night-walk',

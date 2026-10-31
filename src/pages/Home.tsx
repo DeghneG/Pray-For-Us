@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ProductCard, ThornDivider, Ticker } from '../components/bits'
 import { FitDialog, FitFrame } from '../components/Congregation'
+import { Marquee } from '../components/Marquee'
 import { fits, type Fit } from '../data/fits'
 import { LINKS, products } from '../data/products'
 import { DropList } from '../components/DropList'
@@ -60,13 +61,17 @@ export default function Home() {
             Enter
           </Link>
         </div>
-        <div className="no-scrollbar flex gap-6 overflow-x-auto px-4 pb-6 pt-2 md:px-[max(1rem,calc((100vw-72rem)/2+1rem))]">
-          {fits.map((f) => (
-            <div key={f.id} className="w-52 shrink-0 md:w-60">
-              <FitFrame fit={f} onOpen={setOpen} />
-            </div>
-          ))}
-        </div>
+        <Marquee speed={45} className="py-3" trackClassName="gap-6 pr-6">
+          {(ghost) => (
+            <>
+              {fits.map((f) => (
+                <div key={`${f.id}-${ghost}`} className="w-52 shrink-0 md:w-60">
+                  <FitFrame fit={f} onOpen={setOpen} ghost={ghost} />
+                </div>
+              ))}
+            </>
+          )}
+        </Marquee>
       </section>
 
       <section className="mx-auto max-w-6xl px-4">

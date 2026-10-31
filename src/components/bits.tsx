@@ -1,34 +1,61 @@
+import { useEffect, useId, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import gsap from 'gsap'
 import { img, type Product, STATUS_LABEL, peso } from '../data/products'
+import { useMotion } from '../lib/motion'
+import { Marquee } from './Marquee'
 
-/** Barbed-wire divider, tiled so it works at any width. */
-export function ThornDivider({ className = '' }: { className?: string }) {
+/** Barbed-wire chain that slides sideways. The tile is 64px wide, so shifting the pattern by 64px loops seamlessly. */
+export function ThornDivider({ className = '', reverse = false }: { className?: string; reverse?: boolean }) {
+  const id = 'wire' + useId().replace(/:/g, '')
+  const pattern = useRef<SVGPatternElement>(null)
+  const tween = useRef<gsap.core.Tween | null>(null)
+  const { paused, pausedRef, factor } = useMotion()
+
+  useEffect(() => {
+    const el = pattern.current
+    if (!el) return
+    gsap.set(el, { attr: { x: 0 } })
+    tween.current = gsap.to(el, { attr: { x: reverse ? -64 : 64 }, duration: 64 / (45 * factor), ease: 'none', repeat: -1 })
+    tween.current.paused(pausedRef.current)
+    return () => {
+      tween.current?.kill()
+    }
+  }, [factor, reverse, pausedRef])
+
+  useEffect(() => {
+    tween.current?.paused(paused)
+  }, [paused])
+
   return (
     <svg className={`block h-8 w-full text-peri ${className}`} aria-hidden="true" role="presentation">
       <defs>
-        <pattern id="wire" width="64" height="32" patternUnits="userSpaceOnUse">
+        <pattern ref={pattern} id={id} x="0" width="64" height="32" patternUnits="userSpaceOnUse">
           <path d="M0 16 Q16 8 32 16 T64 16" fill="none" stroke="#F4F4F8" strokeWidth="2.2" />
           <path d="M0 18 Q16 24 32 18 T64 18" fill="none" stroke="#F4F4F8" strokeWidth="1.2" opacity="0.6" />
           <path d="M24 5 L40 27 M40 5 L24 27" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#wire)" />
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
     </svg>
   )
 }
 
 export function Ticker({ items }: { items: string[] }) {
-  const row = [...items, ...items]
   return (
-    <div className="overflow-hidden border-y border-bone/15 bg-peri py-2 text-white" aria-hidden="true">
-      <div className="flex w-max animate-marquee whitespace-nowrap font-display text-lg uppercase tracking-widest">
-        {row.map((t, i) => (
-          <span key={i} className="px-6">
-            {t}
-            <span className="pl-12 text-white/60">✦</span>
-          </span>
-        ))}
-      </div>
+    <div className="border-y border-bone/15 bg-peri py-2 text-white" aria-hidden="true">
+      <Marquee speed={70} pauseOnHover={false}>
+        {(ghost) => (
+          <div className="flex whitespace-nowrap font-display text-lg uppercase tracking-widest" data-ghost={ghost}>
+            {items.map((t, i) => (
+              <span key={i} className="px-6">
+                {t}
+                <span className="pl-12 text-white/60">✦</span>
+              </span>
+            ))}
+          </div>
+        )}
+      </Marquee>
     </div>
   )
 }

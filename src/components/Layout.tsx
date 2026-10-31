@@ -4,6 +4,7 @@ import { useBag } from '../lib/bag'
 import { LINKS } from '../data/products'
 import { BagDrawer } from './BagDrawer'
 import { ThornDivider } from './bits'
+import { MotionToggle } from './Marquee'
 
 const nav = [
   { to: '/shop', label: 'Shop' },
@@ -37,8 +38,9 @@ export function Layout() {
   return (
     <div className="grain">
       <ScrollToTop />
-      <div className="bg-coal py-1.5 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-bone/60">
-        Proposal prototype · sample data · no orders are sent
+      <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 bg-coal px-4 py-1.5 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-bone/60">
+        <span>Proposal prototype · sample data · no orders are sent</span>
+        <MotionToggle />
       </div>
 
       <header className="sticky top-0 z-50 border-b border-bone/10 bg-ink/90 backdrop-blur">

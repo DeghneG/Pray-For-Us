@@ -3,16 +3,39 @@ import { Link } from 'react-router-dom'
 import { fits, type Fit } from '../data/fits'
 import { getProduct, img, LINKS, peso } from '../data/products'
 
-export function FitFrame({ fit, onOpen, className = '' }: { fit: Fit; onOpen: (f: Fit) => void; className?: string }) {
+export function FitFrame({
+  fit,
+  onOpen,
+  className = '',
+  ghost = false,
+}: {
+  fit: Fit
+  onOpen: (f: Fit) => void
+  className?: string
+  /** Duplicate copy used to loop the carousel: hidden from assistive tech and the tab order. */
+  ghost?: boolean
+}) {
   return (
     <button
       type="button"
       onClick={() => onOpen(fit)}
       aria-label={`Open fit: ${fit.caption}`}
+      aria-hidden={ghost || undefined}
+      tabIndex={ghost ? -1 : undefined}
       className={`arch block w-full text-left ${className}`}
       style={{ aspectRatio: '3 / 4' }}
     >
-      <img src={img(fit.photo, 'sm')} alt={fit.caption} loading="lazy" className="h-full w-full object-cover object-center" />
+      <img
+        src={img(fit.photo, 'sm')}
+        alt={ghost ? '' : fit.caption}
+        loading="lazy"
+        className="h-full w-full object-cover"
+        style={{
+          objectPosition: fit.focus ?? '50% 50%',
+          transform: fit.hideBar ? 'scale(1.22)' : undefined,
+          transformOrigin: '50% 0%',
+        }}
+      />
       <span className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-ink to-transparent px-3 pb-3 pt-10 font-mono text-[11px] uppercase tracking-wider">
         {fit.handle ?? '#PrayForUs'}
       </span>
