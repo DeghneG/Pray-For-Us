@@ -6,6 +6,7 @@ import { BagDrawer } from './BagDrawer'
 import { ThornDivider } from './bits'
 import { Chat } from './Chat'
 import { MotionToggle } from './Marquee'
+import { ScrollProgress } from './ScrollProgress'
 import { SocialLinks } from './Social'
 
 const nav = [
@@ -82,6 +83,7 @@ export function Layout() {
       <WordmarkStrip />
 
       <header className="sticky top-0 z-50 border-b border-bone/10 bg-ink/90 backdrop-blur">
+        <ScrollProgress />
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
           <Link to="/" aria-label="Pray For Us, home" className="shrink-0">
             <img src="/logo.png" alt="Pray For Us" className="h-10 w-auto" />
