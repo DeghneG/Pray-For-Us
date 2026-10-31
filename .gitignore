@@ -1,0 +1,15 @@
+node_modules
+dist
+.vercel
+.env*
+*.log
+.gstack
+
+# Kept local: pitch/strategy docs, original client photos, source logo
+PLAN.md
+IMPLEMENTATION_PLAN.md
+FEATURES_PLAN.md
+ARCHITECTURE.md
+file_mapping.json
+pfu picture/
+Logo/
