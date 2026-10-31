@@ -6,6 +6,8 @@ import { BagDrawer } from './BagDrawer'
 import { ThornDivider } from './bits'
 import { Chat } from './Chat'
 import { MotionToggle } from './Marquee'
+import { Tour, tourSeen } from './Tour'
+import { introState, onIntroDone } from '../lib/intro'
 import { ScrollProgress } from './ScrollProgress'
 import { SocialLinks } from './Social'
 
@@ -74,8 +76,23 @@ export function Layout() {
   const { totals, setOpen } = useBag()
   const [menu, setMenu] = useState(false)
   const { pathname } = useLocation()
+  const [tour, setTour] = useState<number | null>(null)
 
   useEffect(() => setMenu(false), [pathname])
+
+  // First visit: show the how-to-order walkthrough once the opening loader is gone. Not inside the admin preview.
+  useEffect(() => {
+    if (tourSeen() || window.location.search.includes('embed')) return
+    let t: number | undefined
+    const show = () => {
+      t = window.setTimeout(() => setTour(0), 500)
+    }
+    const off = introState.done ? (show(), () => {}) : onIntroDone(show)
+    return () => {
+      off()
+      window.clearTimeout(t)
+    }
+  }, [])
 
   return (
     <div className="grain">
@@ -105,6 +122,9 @@ export function Layout() {
 
           <div className="flex items-center gap-2">
             <SocialLinks className="hidden lg:flex" />
+            <button className="chip" onClick={() => setTour(1)} aria-label="How to order guide">
+              <span aria-hidden="true">? </span>Guide
+            </button>
             <Link to="/admin" className="chip hidden !border-peri !text-peri-light hover:!bg-peri hover:!text-white sm:inline-block">
               Owner login
             </Link>
@@ -125,6 +145,9 @@ export function Layout() {
               </NavLink>
             ))}
             <SocialLinks className="pt-4" />
+            <button className="btn btn-ghost mt-4 !px-4 !py-2 !text-base" onClick={() => setTour(1)}>
+              How to order guide
+            </button>
             <div className="flex flex-wrap gap-2 pt-4">
               <Link to="/admin" className="btn btn-peri !px-4 !py-2 !text-base">
                 Owner login
@@ -192,6 +215,7 @@ export function Layout() {
         </div>
       </footer>
 
+      <Tour startAt={tour} onClose={() => setTour(null)} />
       <BagDrawer />
       <Chat />
     </div>

@@ -85,6 +85,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       to={`/product/${product.slug}`}
+      data-tour={`product-${product.slug}`}
       className="group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-peri"
     >
       <div className="relative aspect-square overflow-hidden border border-bone/10 bg-coal">

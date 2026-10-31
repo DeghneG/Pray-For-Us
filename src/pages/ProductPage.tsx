@@ -118,12 +118,13 @@ export default function ProductPage() {
           {orderable && (
             <>
               {needsSize && (
-                <fieldset>
+                <fieldset data-tour="sizes">
                   <legend className="label mb-2">Size</legend>
                   <div className="flex flex-wrap gap-2">
                     {sizes.map((s) => (
                       <button
                         key={s}
+                        data-size={s}
                         className={`chip min-w-[3.25rem] ${size === s ? 'chip-on' : ''}`}
                         aria-pressed={size === s}
                         onClick={() => {
@@ -147,7 +148,7 @@ export default function ProductPage() {
               )}
 
               <div className="flex flex-col gap-3 sm:flex-row">
-                <button className="btn btn-peri flex-1" onClick={addToBag}>
+                <button data-tour="add" className="btn btn-peri flex-1" onClick={addToBag}>
                   Add to bag
                 </button>
                 <a className="btn btn-ghost flex-1" href={LINKS.messenger} target="_blank" rel="noopener noreferrer">

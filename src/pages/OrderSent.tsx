@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { StepTrail } from '../components/StepTrail'
 import { copyText, loadOrders, openMessenger } from '../lib/order'
 
 export default function OrderSent() {
@@ -26,7 +27,8 @@ export default function OrderSent() {
 
   return (
     <section className="mx-auto max-w-2xl px-4 pt-12">
-      <p className="label">Order request saved (demo)</p>
+      <StepTrail current={3} />
+      <p className="label mt-4">Order request saved (demo)</p>
       <h1 className="h-display text-6xl md:text-7xl">{order.orderNo}</h1>
       <p className="font-fang mt-4 text-4xl">Now send it to us in Messenger.</p>
       <p className="mt-3 text-bone/70">

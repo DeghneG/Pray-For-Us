@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useBag } from '../lib/bag'
 import { BUNDLE, getProduct, img, peso } from '../data/products'
 import { PhotoPlaceholder } from './bits'
+import { StepTrail } from './StepTrail'
 
 export function BagDrawer() {
   const { open, setOpen, items, totals, setQty, remove } = useBag()
@@ -23,13 +24,17 @@ export function BagDrawer() {
   return (
     <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Order bag">
       <button className="absolute inset-0 bg-black/70" aria-label="Close bag" onClick={() => setOpen(false)} />
-      <aside className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-peri/50 bg-ink">
+      <aside data-tour="bag" className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-peri/50 bg-ink">
         <header className="flex items-center justify-between border-b border-bone/15 p-4">
           <h2 className="h-display text-3xl">Order bag</h2>
           <button className="chip" onClick={() => setOpen(false)}>
             Close
           </button>
         </header>
+
+        <div className="border-b border-bone/10 px-4 py-2">
+          <StepTrail current={1} />
+        </div>
 
         <div className="flex-1 overflow-y-auto p-4">
           {items.length === 0 ? (
@@ -97,7 +102,7 @@ export function BagDrawer() {
               <span className="font-mono text-2xl font-bold">{peso(totals.subtotal)}</span>
             </div>
             <p className="font-mono text-xs text-bone/60">+ shipping fee. We confirm your order and quote shipping in Messenger.</p>
-            <Link to="/checkout" onClick={() => setOpen(false)} className="btn btn-peri w-full">
+            <Link data-tour="checkout-btn" to="/checkout" onClick={() => setOpen(false)} className="btn btn-peri w-full">
               Checkout
             </Link>
           </footer>

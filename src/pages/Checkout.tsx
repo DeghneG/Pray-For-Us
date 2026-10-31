@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BUNDLE, peso } from '../data/products'
 import { useBag } from '../lib/bag'
+import { StepTrail } from '../components/StepTrail'
 import { buildMessage, saveOrder, type Customer } from '../lib/order'
 
 export default function Checkout() {
@@ -35,14 +36,15 @@ export default function Checkout() {
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-12">
-      <p className="label">Almost there</p>
+      <StepTrail current={2} />
+      <p className="label mt-4">Almost there</p>
       <h1 className="h-display text-6xl md:text-7xl">Checkout</h1>
       <p className="mt-3 max-w-xl border-l-2 border-peri pl-3 font-mono text-sm text-bone/70">
         This is a prototype: no order is sent anywhere. In the real site your order is saved and the brand is notified, then you finish in Messenger.
       </p>
 
       <div className="mt-8 grid gap-10 md:grid-cols-[1.3fr_1fr]">
-        <form onSubmit={submit} className="space-y-4">
+        <form data-tour="checkout-form" onSubmit={submit} className="space-y-4">
           <label className="block">
             <span className="label">Full name</span>
             <input className="field mt-1" required autoComplete="name" value={c.name} onChange={set('name')} />
@@ -75,7 +77,7 @@ export default function Checkout() {
             <input type="checkbox" className="mt-1 accent-peri" required checked={consent} onChange={(e) => setConsent(e.target.checked)} />
             <span>I agree that Pray For Us may use these details to process and deliver my order.</span>
           </label>
-          <button type="submit" className="btn btn-peri w-full">
+          <button data-tour="place" type="submit" className="btn btn-peri w-full">
             Place order request
           </button>
         </form>
