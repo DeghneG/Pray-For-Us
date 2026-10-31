@@ -60,11 +60,6 @@ export function Preloader() {
       if (cancelled) return
       const q = gsap.utils.selector(el)
       gsap.set(el, { opacity: 1 })
-      if (reduce) {
-        gsap.delayedCall(0.9, leave)
-        return
-      }
-
       const stage = q('.pl-stage')[0] as HTMLElement
       const size = stage.offsetWidth
       const reach = size * 1.2
@@ -75,7 +70,9 @@ export function Preloader() {
 
       // Jolt the whole logo away from the strike, then let it spring back.
       const jolt = (dx: number, dy: number, power: number) =>
-        gsap.fromTo(
+        reduce
+          ? undefined
+          : gsap.fromTo(
           shake,
           { x: -dx * size * 0.006 * power, y: -dy * size * 0.006 * power, scale: 1 + 0.004 * power },
           { x: 0, y: 0, scale: 1, duration: 0.16 + 0.05 * power, ease: 'elastic.out(1,0.45)', overwrite: 'auto' },
@@ -109,12 +106,12 @@ export function Preloader() {
           .to(nail, { x: -dx * 7, y: -dy * 7, duration: 0.05, ease: 'power2.out' }, hit)
           .to(nail, { x: 0, y: 0, duration: 0.12, ease: 'power2.inOut' }, hit + 0.05)
           // flash where the tip lands
-          .fromTo(flash, { scale: heavy ? 0.5 : 0.25, opacity: 1 }, { scale: heavy ? 3.4 : 1.5, opacity: 0, duration: heavy ? 0.6 : 0.34, ease: 'power2.out' }, hit)
+          .fromTo(flash, { scale: heavy ? 0.5 : 0.25, opacity: reduce ? 0 : 1 }, { scale: heavy ? 3.4 : 1.5, opacity: 0, duration: heavy ? 0.6 : 0.34, ease: 'power2.out' }, hit)
           .call(() => jolt(dx, dy, heavy ? 6 : 1), undefined, hit)
       })
 
       // The last nail is the heaviest: shockwave ring out of the logo.
-      tl.fromTo(ring, { scale: 0.7, opacity: 0.9 }, { scale: 1.7, opacity: 0, duration: 0.9, ease: 'power2.out' }, lastImpact)
+      tl.fromTo(ring, { scale: 0.7, opacity: reduce ? 0 : 0.9 }, { scale: 1.7, opacity: 0, duration: 0.9, ease: 'power2.out' }, lastImpact)
 
       // Hand off to the untouched logo, so the final frame is exactly the real artwork.
       tl.to(q('.pl-final'), { opacity: 1, duration: 0.2 }, lastImpact + 0.18)
