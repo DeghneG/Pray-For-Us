@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Reveal } from '../components/Reveal'
 import { SocialLinks } from '../components/Social'
+import { ownerBattles, ownerFacts, ownerIntro, ownerMilestones, ownerSections, ownerStyle } from '../data/owner'
 import { img } from '../data/products'
 
 export default function About() {
@@ -42,10 +43,8 @@ export default function About() {
             </figure>
           </div>
           <div className="space-y-4 text-lg text-bone/80">
-            <p>
-              Saint Ice, formerly known as Icerocks, is the founder of Pray For Us. He is an emcee from Parañaque and has been on the FlipTop roster since 2011.
-            </p>
-            <p>He stepped away from battling to focus on music and MMA, then came back in 2024. Pray For Us is where that story goes next: faith, the street, and something you can wear.</p>
+            <p className="font-fang text-3xl leading-tight text-bone">Founder of Pray For Us.</p>
+            <p className="text-base leading-relaxed">{ownerIntro}</p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link to="/product/prodigal-son-tee" className="btn btn-peri">
                 His tee: Prodigal Son
@@ -55,6 +54,69 @@ export default function About() {
           </div>
         </div>
       </Reveal>
+
+      <section className="mx-auto mt-14 max-w-4xl px-4" aria-labelledby="profile-heading">
+        <h3 id="profile-heading" className="sr-only">
+          Saint Ice profile
+        </h3>
+        <Reveal group>
+          <dl className="grid grid-cols-2 gap-px border border-bone/15 bg-bone/15 md:grid-cols-5">
+            {ownerFacts.map((f) => (
+              <div key={f.label} className="bg-ink p-4">
+                <dt className="label">{f.label}</dt>
+                <dd className="mt-1 font-display text-xl uppercase leading-tight">{f.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
+
+        <Reveal group className="mt-12 space-y-8">
+          {ownerSections.map((s) => (
+            <article key={s.title}>
+              <h3 className="h-display text-3xl md:text-4xl">{s.title}</h3>
+              <p className="mt-3 text-lg leading-relaxed text-bone/80">{s.body}</p>
+            </article>
+          ))}
+        </Reveal>
+
+        <div className="mt-14">
+          <h3 className="h-display text-3xl md:text-4xl">Style and mastery</h3>
+          <Reveal group as="ul" className="mt-5 grid gap-4 md:grid-cols-3">
+            {ownerStyle.map((s) => (
+              <li key={s.title} className="border border-bone/15 bg-coal p-5">
+                <h4 className="font-display text-2xl uppercase">{s.title}</h4>
+                <p className="mt-2 text-bone/75">{s.body}</p>
+              </li>
+            ))}
+          </Reveal>
+        </div>
+
+        <div className="mt-14 grid gap-10 md:grid-cols-2">
+          <div>
+            <h3 className="h-display text-3xl md:text-4xl">Milestones</h3>
+            <Reveal group as="ol" className="mt-5 space-y-0 border-l-2 border-peri">
+              {ownerMilestones.map((m) => (
+                <li key={m.year} className="relative pb-6 pl-6 last:pb-0">
+                  <span className="absolute -left-[7px] top-1.5 h-3 w-3 bg-peri" aria-hidden="true" />
+                  <span className="font-display text-2xl text-peri-light">{m.year}</span>
+                  <p className="text-bone/80">{m.text}</p>
+                </li>
+              ))}
+            </Reveal>
+          </div>
+          <div>
+            <h3 className="h-display text-3xl md:text-4xl">Key battles</h3>
+            <Reveal group as="ul" className="mt-5 space-y-3">
+              {ownerBattles.map((b) => (
+                <li key={b.title} className="border border-bone/15 p-4">
+                  <p className="font-display text-xl uppercase leading-tight">{b.title}</p>
+                  <p className="mt-1 text-sm text-bone/70">{b.note}</p>
+                </li>
+              ))}
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
       <Reveal as="section" className="mx-auto mt-20 grid max-w-4xl gap-6 px-4 md:grid-cols-2">
         <img src={img('lifestyle-cap-desk', 'lg')} alt="A washed Pray For Us cap on a desk with markers and toys" className="w-full border border-bone/15 object-cover" loading="lazy" />

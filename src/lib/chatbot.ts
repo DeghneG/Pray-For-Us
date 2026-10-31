@@ -177,7 +177,7 @@ export function answer(input: string): BotReply {
   }
   if (has(t, 'saint ice', 'icerocks', 'ice rocks', 'owner', 'founder', 'who made', 'who are you', 'who is', 'emcee', 'fliptop', 'about')) {
     return {
-      text: 'Pray For Us is made by Saint Ice (formerly Icerocks), an emcee from Parañaque who has been on the FlipTop roster since 2011. After stepping away he came back in 2024 and put it into the clothes. You can see him on the About page.',
+      text: 'Pray For Us is made by Saint Ice (formerly Ice Rocks), a veteran FlipTop battle rapper from Parañaque City in the Metro Manila division (CIDA / AOJ). He joined FlipTop in 2011, stepped away for about a decade to focus on music and MMA, and returned in February 2024 at Won Minutes Luzon. His win over Yuniko at Zoning 17 and his Ahon 16 match against Ban in December 2025 are among his key battles. Full profile on the About page.',
       links: [{ label: 'About Saint Ice', to: '/about' }],
     }
   }

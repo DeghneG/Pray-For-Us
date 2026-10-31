@@ -1,27 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
+import parts from '../data/logoParts.json'
 import { finishIntro, SHOW_PRELOADER } from '../lib/intro'
 
-// Nails, in the logo's own coordinate space (700 x 340, oval centred on 350,170).
-// x,y = centre of the nail, a = angle in degrees, l = length. They cross the wire ring, which sits at rx 262 / ry 104.
-const NAILS = [
-  { x: 112, y: 104, a: 62, l: 200 },
-  { x: 182, y: 80, a: 78, l: 215 },
-  { x: 258, y: 68, a: 102, l: 235 },
-  { x: 352, y: 58, a: 88, l: 250 },
-  { x: 446, y: 68, a: 72, l: 225 },
-  { x: 532, y: 82, a: 106, l: 220 },
-  { x: 600, y: 108, a: 122, l: 195 },
-  { x: 122, y: 236, a: 118, l: 195 },
-  { x: 204, y: 258, a: 100, l: 225 },
-  { x: 292, y: 266, a: 80, l: 235 },
-  { x: 382, y: 272, a: 112, l: 245 },
-  { x: 470, y: 260, a: 95, l: 225 },
-  { x: 556, y: 240, a: 70, l: 215 },
-  { x: 612, y: 198, a: 132, l: 175 },
-]
+// The opening loader is built from the real logo, cut into layers by scripts/split-logo.mjs:
+//   base.webp  = oval + crown-of-thorns wire + lettering, with no nails
+//   nail-N.webp = the nails, cut out of the logo pixel for pixel
+// The base appears first; then each nail drives in along its own axis, through the wire, to its place in the logo.
 
-const W = 7 // half-width of a nail at its thickest point
+const DIR = '/logo-parts/'
+const pct = (n: number, of: number) => `${(n / of) * 100}%`
 
 export function Preloader() {
   const [gone, setGone] = useState(!SHOW_PRELOADER)
@@ -57,46 +45,52 @@ export function Preloader() {
     const build = () => {
       if (cancelled) return
       const q = gsap.utils.selector(el)
-      const nails = q('.pl-nail') as unknown as SVGElement[]
       gsap.set(el, { opacity: 1 })
-
       if (reduce) {
         gsap.delayedCall(0.9, leave)
         return
       }
 
+      const stage = q('.pl-stage')[0] as HTMLElement
+      const reach = stage.offsetWidth * 1.2
+      const nails = q('.pl-nail') as HTMLElement[]
       const shake = () =>
         gsap.fromTo(
           q('.pl-body'),
-          { x: (Math.random() - 0.5) * 7, y: (Math.random() - 0.5) * 7 },
-          { x: 0, y: 0, duration: 0.18, ease: 'elastic.out(1,0.4)', overwrite: 'auto' },
+          { x: (Math.random() - 0.5) * 8, y: (Math.random() - 0.5) * 8 },
+          { x: 0, y: 0, duration: 0.2, ease: 'elastic.out(1,0.4)', overwrite: 'auto' },
         )
 
-      tl = gsap.timeline({ onComplete: () => gsap.delayedCall(0.45, leave) })
-      tl.fromTo(q('.pl-oval'), { scale: 0.55, opacity: 0, transformOrigin: '50% 50%' }, { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.6)' }, 0)
-        .fromTo(q('.pl-wire'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: 'power2.inOut' }, 0.25)
-        .fromTo(q('.pl-twist'), { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.95)
-        .fromTo(q('.pl-text'), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.7)
-        .fromTo(q('.pl-bar'), { scaleX: 0 }, { scaleX: 1, duration: 2.9, ease: 'none', transformOrigin: '0 50%' }, 0)
+      // Start state: nails far outside along their own axes.
+      nails.forEach((n) => gsap.set(n, { x: Number(n.dataset.dx) * reach, y: Number(n.dataset.dy) * reach }))
 
-      // Each nail starts far outside along its own axis, then drives in through the wire and lands in place.
+      tl = gsap.timeline({ onComplete: () => gsap.delayedCall(0.4, leave) })
+      tl.fromTo(q('.pl-base'), { scale: 0.6, opacity: 0, rotate: -4, transformOrigin: '50% 50%' }, { scale: 1, opacity: 1, rotate: 0, duration: 0.8, ease: 'back.out(1.5)' }, 0)
+        .fromTo(q('.pl-bar'), { scaleX: 0 }, { scaleX: 1, duration: 2.7, ease: 'none', transformOrigin: '0 50%' }, 0)
+
       const order = gsap.utils.shuffle(nails.map((_, i) => i))
       order.forEach((idx, n) => {
         const nail = nails[idx]
-        const side = idx % 2 === 0 ? 1 : -1
-        const at = 1.2 + n * 0.065
+        const at = 1.0 + n * 0.028
+        const dx = Number(nail.dataset.dx)
+        const dy = Number(nail.dataset.dy)
         tl!
-          .fromTo(nail, { x: side * 1800 }, { x: 0, duration: 0.42, ease: 'power4.in' }, at)
-          .to(nail, { x: -side * 8, duration: 0.05, ease: 'power2.out' }, at + 0.42)
-          .to(nail, { x: 0, duration: 0.12, ease: 'power2.inOut' }, at + 0.47)
-          .call(shake, undefined, at + 0.42)
+          .to(nail, { x: 0, y: 0, duration: 0.42, ease: 'power4.in' }, at)
+          // recoil on impact, then settle
+          .to(nail, { x: -dx * 7, y: -dy * 7, duration: 0.05, ease: 'power2.out' }, at + 0.42)
+          .to(nail, { x: 0, y: 0, duration: 0.12, ease: 'power2.inOut' }, at + 0.47)
+        if (n % 3 === 0) tl!.call(shake, undefined, at + 0.42)
       })
 
-      tl.to(q('.pl-glow'), { filter: 'drop-shadow(0 0 46px rgba(142,155,255,0.95))', duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut' }, '>-0.05')
+      // Hand off to the untouched logo, so the final frame is exactly the real artwork.
+      tl.to(q('.pl-final'), { opacity: 1, duration: 0.2 }, '>0.1')
+        .to(q('.pl-glow'), { filter: 'drop-shadow(0 0 46px rgba(142,155,255,0.95))', duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut' }, '<')
     }
 
-    // Wait briefly for the display font so the lettering does not jump.
-    Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1200))]).then(build)
+    // Wait for the cut-out images (and the label font) so nothing pops in mid-animation.
+    const imgs = Array.from(el.querySelectorAll('img'))
+    const decoded = Promise.all(imgs.map((i) => (i.decode ? i.decode().catch(() => undefined) : Promise.resolve())))
+    Promise.race([Promise.all([decoded, document.fonts.ready]), new Promise((r) => setTimeout(r, 2500))]).then(build)
 
     return () => {
       cancelled = true
@@ -116,39 +110,25 @@ export function Preloader() {
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-ink opacity-0"
     >
       <div className="pl-glow" style={{ filter: 'drop-shadow(0 0 26px rgba(92,108,242,0.55))' }}>
-        <svg viewBox="-20 -24 740 388" className="w-[min(88vw,780px)] overflow-visible" aria-hidden="true">
-          <g className="pl-body">
-            <ellipse className="pl-oval" cx="350" cy="170" rx="300" ry="135" fill="#5C6CF2" />
-            <text
-              className="pl-text"
-              x="350"
-              y="208"
-              textAnchor="middle"
-              fill="#fff"
-              style={{ fontFamily: "Anton, Impact, 'Arial Black', sans-serif", fontSize: 120 }}
-              textLength="468"
-              lengthAdjust="spacingAndGlyphs"
-            >
-              PRAY FOR US
-            </text>
-            <ellipse className="pl-wire" cx="350" cy="170" rx="262" ry="104" fill="none" stroke="#fff" strokeWidth="13" pathLength={1} strokeDasharray={1} strokeDashoffset={1} />
-            <ellipse className="pl-twist" cx="350" cy="170" rx="262" ry="104" fill="none" stroke="#5C6CF2" strokeWidth="13" pathLength={1} strokeDasharray="0.004 0.021" opacity="0" />
-          </g>
-          <g>
-            {NAILS.map((n, i) => (
-              <g key={i} transform={`translate(${n.x} ${n.y}) rotate(${n.a})`}>
-                <polygon
-                  className="pl-nail"
-                  points={`${-n.l / 2},0 0,${-W} ${n.l / 2},0 0,${W}`}
-                  fill="#fff"
-                  stroke="#5C6CF2"
-                  strokeWidth="3"
-                  strokeLinejoin="round"
+        <div className="pl-stage relative w-[min(88vw,820px)]" style={{ aspectRatio: `${parts.w} / ${parts.h}` }}>
+          <div className="pl-body absolute inset-0">
+            <img className="pl-base absolute inset-0 h-full w-full" src={`${DIR}base.webp`} alt="" />
+          </div>
+          {parts.nails.map((nail, i) => (
+            <div key={i} className="pl-nail absolute inset-0 will-change-transform" data-dx={nail.dx} data-dy={nail.dy}>
+              {nail.pieces.map((p) => (
+                <img
+                  key={p.file}
+                  src={`${DIR}${p.file}`}
+                  alt=""
+                  className="absolute"
+                  style={{ left: pct(p.x, parts.w), top: pct(p.y, parts.h), width: pct(p.w, parts.w), height: pct(p.h, parts.h) }}
                 />
-              </g>
-            ))}
-          </g>
-        </svg>
+              ))}
+            </div>
+          ))}
+          <img className="pl-final absolute inset-0 h-full w-full opacity-0" src="/logo.png" alt="" style={{ objectFit: 'fill' }} />
+        </div>
       </div>
 
       <div className="mt-8 w-[min(70vw,360px)]">
