@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
 import { ProductCard } from '../components/bits'
+import { Reveal } from '../components/Reveal'
 import { categories, products, type Category } from '../data/products'
 
 export default function Shop() {
@@ -29,11 +30,11 @@ export default function Shop() {
         All prices are in pesos + shipping fee. Availability changes fast, so we confirm in Messenger.
       </p>
 
-      <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+      <Reveal group key={current} intro className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
         {list.map((p) => (
           <ProductCard key={p.slug} product={p} />
         ))}
-      </div>
+      </Reveal>
     </section>
   )
 }

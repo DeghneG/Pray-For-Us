@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ThornDivider } from '../components/bits'
+import { Reveal } from '../components/Reveal'
 import { img } from '../data/products'
 
 export default function About() {
@@ -9,7 +9,7 @@ export default function About() {
         <p className="label">The brand</p>
         <h1 className="h-display text-6xl md:text-8xl">About</h1>
         <p className="font-fang mt-8 text-4xl leading-tight md:text-5xl">Do you believe in divine intervention?</p>
-        <div className="mt-8 space-y-5 text-lg text-bone/80">
+        <Reveal group intro className="mt-8 space-y-5 text-lg text-bone/80">
           <p>
             Pray For Us is Filipino hip-hop streetwear. Faith and the street in one frame: a crown of thorns done as barbed wire, a prayer said out loud, a message you can wear.
           </p>
@@ -19,14 +19,10 @@ export default function About() {
           <p>
             Every drop is small on purpose. Heavy tees, hats, a hoodie, stickers. Some pieces come back, some never do.
           </p>
-        </div>
+        </Reveal>
       </section>
 
-      <div className="mt-14">
-        <ThornDivider />
-      </div>
-
-      <section className="mx-auto mt-14 grid max-w-4xl gap-6 px-4 md:grid-cols-2">
+      <Reveal as="section" className="mx-auto mt-14 grid max-w-4xl gap-6 px-4 md:grid-cols-2">
         <img src={img('lifestyle-cap-desk', 'lg')} alt="A washed Pray For Us cap on a desk with markers and toys" className="w-full border border-bone/15 object-cover" loading="lazy" />
         <div className="flex flex-col justify-center gap-4">
           <h2 className="h-display text-4xl">Wear it. Tag it.</h2>
@@ -40,7 +36,7 @@ export default function About() {
             </Link>
           </div>
         </div>
-      </section>
+      </Reveal>
     </>
   )
 }

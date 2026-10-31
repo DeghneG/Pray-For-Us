@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useBag } from '../lib/bag'
 import { LINKS } from '../data/products'
 import { BagDrawer } from './BagDrawer'
@@ -12,6 +12,29 @@ const nav = [
   { to: '/how-to-order', label: 'How to order' },
   { to: '/about', label: 'About' },
 ]
+
+// The top strip: the brand name set in six different typefaces.
+const wordmarks = [
+  { cls: 'font-display tracking-widest' },
+  { cls: 'font-fang normal-case tracking-wide text-[18px]' },
+  { cls: 'font-marker tracking-wide' },
+  { cls: 'font-typewriter tracking-widest' },
+  { cls: 'font-bungee tracking-wider text-[13px]' },
+  { cls: 'font-mono font-bold tracking-[0.25em] text-[13px]' },
+]
+
+function BackButton() {
+  const navigate = useNavigate()
+  // react-router stores the position in the history stack; at 0 there is nothing to go back to.
+  const canGoBack = (window.history.state?.idx ?? 0) > 0
+  return (
+    <div className="mx-auto max-w-6xl px-4 pt-6">
+      <button type="button" onClick={() => (canGoBack ? navigate(-1) : navigate('/'))} className="chip inline-flex items-center gap-2">
+        <span aria-hidden="true">←</span> Back
+      </button>
+    </div>
+  )
+}
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation()
@@ -38,9 +61,12 @@ export function Layout() {
   return (
     <div className="grain">
       <ScrollToTop />
-      <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 bg-coal px-4 py-1.5 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-bone/60">
-        <span>Proposal prototype · sample data · no orders are sent</span>
-        <MotionToggle />
+      <div className="flex items-center justify-center gap-5 overflow-hidden bg-coal px-4 py-1.5 text-bone/70" aria-label="Pray For Us">
+        {wordmarks.map((w, i) => (
+          <span key={w.cls} aria-hidden="true" className={`${w.cls} ${i > 2 ? 'hidden sm:inline' : ''} ${i > 4 ? 'md:inline' : ''} whitespace-nowrap text-[15px] uppercase leading-none`}>
+            Pray for us
+          </span>
+        ))}
       </div>
 
       <header className="sticky top-0 z-50 border-b border-bone/10 bg-ink/90 backdrop-blur">
@@ -90,6 +116,7 @@ export function Layout() {
       </header>
 
       <main>
+        {pathname !== '/' && <BackButton />}
         <Outlet />
       </main>
 
@@ -130,9 +157,11 @@ export function Layout() {
             </Link>
           </div>
         </div>
-        <p className="border-t border-bone/10 py-4 text-center font-mono text-[11px] uppercase tracking-widest text-bone/40">
-          © Pray For Us · #PrayForUs
-        </p>
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-bone/10 px-4 py-4 text-center font-mono text-[11px] uppercase tracking-widest text-bone/40">
+          <span>© Pray For Us · #PrayForUs</span>
+          <span>Proposal prototype · sample data</span>
+          <MotionToggle />
+        </div>
       </footer>
 
       <BagDrawer />

@@ -17,6 +17,9 @@ export default {
       fontFamily: {
         display: ['Anton', 'Impact', 'sans-serif'],
         fang: ['UnifrakturCook', 'serif'],
+        marker: ['"Permanent Marker"', 'cursive'],
+        typewriter: ['"Special Elite"', 'monospace'],
+        bungee: ['Bungee', 'sans-serif'],
         mono: ['"Space Mono"', 'ui-monospace', 'monospace'],
         sans: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
       },

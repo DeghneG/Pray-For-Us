@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Reveal } from '../components/Reveal'
 import { SizeChart } from '../components/SizeChart'
 import { LINKS } from '../data/products'
 
@@ -15,7 +16,7 @@ export default function HowToOrder() {
       <p className="label">No middlemen</p>
       <h1 className="h-display text-6xl md:text-8xl">How to order</h1>
 
-      <ol className="mt-10 space-y-4">
+      <Reveal as="ol" group intro className="mt-10 space-y-4">
         {steps.map(([t, d], i) => (
           <li key={t} className="flex gap-5 border border-bone/15 p-5">
             <span className="wire-text font-display text-6xl leading-none">{String(i + 1).padStart(2, '0')}</span>
@@ -25,9 +26,9 @@ export default function HowToOrder() {
             </div>
           </li>
         ))}
-      </ol>
+      </Reveal>
 
-      <div className="mt-10 grid gap-4 md:grid-cols-2">
+      <Reveal group className="mt-10 grid gap-4 md:grid-cols-2">
         <div className="border border-bone/15 p-5">
           <h2 className="label mb-2">Prices</h2>
           <p className="text-bone/80">Every price is in pesos and <strong>+ shipping fee</strong>. That includes the hoodie, keychain and stickers.</p>
@@ -46,7 +47,7 @@ export default function HowToOrder() {
             Message us on Messenger
           </a>
         </div>
-      </div>
+      </Reveal>
 
       <h2 className="h-display mb-4 mt-14 text-4xl">Size charts</h2>
       <div className="space-y-3">

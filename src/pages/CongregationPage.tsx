@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { FitDialog, FitFrame } from '../components/Congregation'
 import { ThornDivider } from '../components/bits'
+import { Reveal } from '../components/Reveal'
 import { fits, type Fit } from '../data/fits'
 import { getProduct, LINKS } from '../data/products'
 
@@ -35,21 +36,21 @@ export default function CongregationPage() {
           ))}
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+        <Reveal group intro key={filter} className="mt-10 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
           {list.map((f, i) => (
             <div key={f.id} className={i % 2 === 1 ? 'md:mt-10' : ''}>
               <FitFrame fit={f} onOpen={setOpen} />
               <p className="mt-3 line-clamp-2 font-fang text-xl leading-snug">{f.caption}</p>
             </div>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       <div className="mt-20">
         <ThornDivider />
       </div>
 
-      <section className="mx-auto mt-16 max-w-3xl px-4">
+      <Reveal as="section" className="mx-auto mt-16 max-w-3xl px-4">
         <div className="border border-peri/60 bg-coal p-6 md:p-8">
           <h2 className="h-display text-4xl md:text-5xl">Send your fit</h2>
           <ol className="mt-4 space-y-2 font-mono text-sm text-bone/80">
@@ -69,7 +70,7 @@ export default function CongregationPage() {
             </a>
           </div>
         </div>
-      </section>
+      </Reveal>
 
       {open && <FitDialog fit={open} onClose={() => setOpen(null)} />}
     </>

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { PhotoPlaceholder, ProductCard, StatusBadge } from '../components/bits'
+import { Reveal } from '../components/Reveal'
 import { SizeChart } from '../components/SizeChart'
 import { FitDialog, FitFrame, fitsFor } from '../components/Congregation'
 import { BUNDLE, getProduct, img, isOrderable, LINKS, peso, products, TEE_SIZES } from '../data/products'
@@ -58,7 +59,7 @@ export default function ProductPage() {
         / {product.name}
       </nav>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <Reveal group intro className="grid gap-8 md:grid-cols-2">
         <div>
           <div className="aspect-square overflow-hidden border border-bone/15 bg-coal">
             {currentPhoto ? (
@@ -174,10 +175,10 @@ export default function ProductPage() {
             </div>
           )}
         </div>
-      </div>
+      </Reveal>
 
       {worn.length > 0 && (
-        <section className="mt-16">
+        <Reveal as="section" className="mt-16">
           <h2 className="h-display mb-5 text-4xl">Worn by the Congregation</h2>
           <div className="flex gap-6 overflow-x-auto pb-4">
             {worn.map((f) => (
@@ -186,17 +187,17 @@ export default function ProductPage() {
               </div>
             ))}
           </div>
-        </section>
+        </Reveal>
       )}
 
       {related.length > 0 && (
         <section className="mt-16">
           <h2 className="h-display mb-5 text-4xl">More like this</h2>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4">
+          <Reveal group className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.slug} product={p} />
             ))}
-          </div>
+          </Reveal>
         </section>
       )}
 
