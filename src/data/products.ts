@@ -320,3 +320,24 @@ export const LINKS = {
   instagram: 'https://www.instagram.com/prayforusprayforus/',
   igHandle: '@prayforusprayforus',
 }
+
+// ---- Admin demo: price/status edits made in /admin are saved in this browser and applied on load,
+// so the site (and the mobile preview) reflect them. Production would read these from the database.
+export const OVERRIDE_KEY = 'pfu-product-overrides'
+export type Override = { price?: number; status?: Status }
+
+export function loadOverrides(): Record<string, Override> {
+  try {
+    return JSON.parse(localStorage.getItem(OVERRIDE_KEY) ?? '{}') as Record<string, Override>
+  } catch {
+    return {}
+  }
+}
+
+const savedOverrides = loadOverrides()
+for (const p of products) {
+  const o = savedOverrides[p.slug]
+  if (!o) continue
+  if (typeof o.price === 'number' && o.price > 0) p.price = o.price
+  if (o.status && o.status in STATUS_LABEL) p.status = o.status
+}

@@ -1,7 +1,9 @@
 // Tracks whether the opening loader has finished, so page-top reveals can wait for it.
 
 /** Flip to false to remove the opening loader entirely. */
-export const SHOW_PRELOADER = true
+// Skipped inside the admin mobile preview (?embed) and on /admin pages.
+const skip = typeof window !== 'undefined' && (window.location.search.includes('embed') || window.location.pathname.startsWith('/admin'))
+export const SHOW_PRELOADER = !skip
 
 export const introState = { done: !SHOW_PRELOADER }
 

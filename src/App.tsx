@@ -12,14 +12,18 @@ import OrderSent from './pages/OrderSent'
 import ProductPage from './pages/ProductPage'
 import Shop from './pages/Shop'
 
-// Admin is split into its own chunk so shoppers never download it.
-const Admin = lazy(() => import('./admin/Admin'))
+// Admin is split into its own chunks so shoppers never download it.
+const AdminApp = lazy(() => import('./admin/AdminApp'))
+const AdminLogin = lazy(() => import('./admin/Login'))
+const loading = <p className="p-10 text-center font-mono">Loading…</p>
 
 export default function App() {
   return (
     <>
       <Preloader />
       <Routes>
+        <Route path="admin/login" element={<Suspense fallback={loading}><AdminLogin /></Suspense>} />
+        <Route path="admin/*" element={<Suspense fallback={loading}><AdminApp /></Suspense>} />
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="shop" element={<Shop />} />
@@ -29,14 +33,6 @@ export default function App() {
           <Route path="about" element={<About />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="order/:orderNo" element={<OrderSent />} />
-          <Route
-            path="admin"
-            element={
-              <Suspense fallback={<p className="p-10 text-center font-mono">Loading…</p>}>
-                <Admin />
-              </Suspense>
-            }
-          />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
