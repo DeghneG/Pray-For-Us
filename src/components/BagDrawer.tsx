@@ -22,7 +22,7 @@ export function BagDrawer() {
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Order bag">
+    <div data-lenis-prevent className="fixed inset-0 z-[70]" role="dialog" aria-modal="true" aria-label="Order bag">
       <button className="absolute inset-0 bg-black/70" aria-label="Close bag" onClick={() => setOpen(false)} />
       <aside data-tour="bag" className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col border-l border-peri/50 bg-ink">
         <header className="flex items-center justify-between border-b border-bone/15 p-4">

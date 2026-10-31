@@ -1,3 +1,4 @@
+import { SmoothScroll, scrollPageTo } from '../lib/smoothScroll'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useBag } from '../lib/bag'
@@ -63,11 +64,11 @@ function ScrollToTop() {
     if (hash) {
       const el = document.getElementById(hash.slice(1))
       if (el) {
-        el.scrollIntoView()
+        scrollPageTo(el)
         return
       }
     }
-    window.scrollTo(0, 0)
+    scrollPageTo(0, true)
   }, [pathname, hash])
   return null
 }
@@ -96,6 +97,7 @@ export function Layout() {
 
   return (
     <div className="grain">
+      <SmoothScroll />
       <ScrollToTop />
       <WordmarkStrip />
 

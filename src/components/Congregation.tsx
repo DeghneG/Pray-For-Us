@@ -60,7 +60,7 @@ export function FitDialog({ fit, onClose }: { fit: Fit; onClose: () => void }) {
   const worn = fit.items.map((s) => getProduct(s)).filter((p): p is NonNullable<typeof p> => Boolean(p))
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center" role="dialog" aria-modal="true" aria-label="Fit details">
+    <div data-lenis-prevent className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center" role="dialog" aria-modal="true" aria-label="Fit details">
       <button className="absolute inset-0 bg-black/80" aria-label="Close" onClick={onClose} tabIndex={-1} />
       <div className="relative grid max-h-[92vh] w-full max-w-4xl overflow-y-auto border border-peri/60 bg-ink md:grid-cols-[1.2fr_1fr]">
         <div className="bg-coal">
