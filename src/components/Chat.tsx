@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { answer, SUGGESTIONS, type BotLink, type BotReply } from '../lib/chatbot'
 import { LINKS } from '../data/products'
+import { DevBot } from './DevBot'
 
 interface Msg {
   id: number
@@ -58,6 +59,7 @@ export function Chat() {
     <>
       {!open && (
         <div className="fixed bottom-4 right-4 z-[65] flex flex-col items-end gap-2">
+          <DevBot />
           <a
             href={LINKS.messenger}
             target="_blank"

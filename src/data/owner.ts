@@ -1,5 +1,7 @@
 // Saint Ice profile, as supplied by the brand. Wording is kept close to the source text.
 
+export const DEVELOPER_NAME = 'Deghne Gabriel Agana'
+
 export const ownerFacts = [
   { label: 'Hometown', value: 'Parañaque City' },
   { label: 'Affiliation', value: 'CIDA / AOJ' },

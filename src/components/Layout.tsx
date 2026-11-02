@@ -10,6 +10,7 @@ import { MotionToggle } from './Marquee'
 import { Tour, tourSeen } from './Tour'
 import { introState, onIntroDone } from '../lib/intro'
 import { ScrollProgress } from './ScrollProgress'
+import { DEVELOPER_NAME } from '../data/owner'
 import { SocialLinks } from './Social'
 
 const nav = [
@@ -212,6 +213,7 @@ export function Layout() {
         </div>
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-bone/10 px-4 py-4 text-center font-mono text-[11px] uppercase tracking-widest text-bone/40">
           <span>© Pray For Us · #PrayForUs</span>
+          <span>Designed &amp; developed by {DEVELOPER_NAME}</span>
           <span>Proposal prototype · sample data</span>
           <MotionToggle />
         </div>
