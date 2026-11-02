@@ -58,7 +58,7 @@ export function Chat() {
   return (
     <>
       {!open && (
-        <div className="fixed bottom-4 right-4 z-[65] flex w-max max-w-[calc(100vw-2rem)] flex-col items-center gap-2">
+        <div className="fixed bottom-4 right-4 z-[65] flex w-max max-w-[calc(100vw-2rem)] flex-col items-end gap-2">
           <DevBot />
           <a
             href={LINKS.messenger}

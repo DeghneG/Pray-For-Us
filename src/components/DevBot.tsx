@@ -13,7 +13,7 @@ export function DevBot() {
   }, [open])
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-end gap-2">
       {open && (
         <div
           role="dialog"
