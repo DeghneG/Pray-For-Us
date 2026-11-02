@@ -104,12 +104,12 @@ export function Layout() {
 
       <header className="sticky top-0 z-50 border-b border-bone/10 bg-ink/90 backdrop-blur">
         <ScrollProgress />
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <Link to="/" aria-label="Pray For Us, home" className="shrink-0">
+        <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-3">
+          <Link to="/" aria-label="Pray For Us, home" className="shrink-0 justify-self-start">
             <img src="/logo.png" alt="Pray For Us" className="h-10 w-auto" />
           </Link>
 
-          <nav className="hidden items-center gap-7 md:flex" aria-label="Main">
+          <nav className="hidden items-center justify-self-center gap-7 md:flex" aria-label="Main">
             {nav.map((n) => (
               <NavLink
                 key={n.to}
@@ -123,7 +123,7 @@ export function Layout() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 justify-self-end">
             <SocialLinks className="hidden lg:flex" />
             <button className="chip" onClick={() => setTour(1)} aria-label="How to order guide">
               <span aria-hidden="true">? </span>Guide

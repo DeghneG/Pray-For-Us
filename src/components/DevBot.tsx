@@ -13,7 +13,7 @@ export function DevBot() {
   }, [open])
 
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="flex flex-col items-center gap-2">
       {open && (
         <div
           role="dialog"
@@ -34,9 +34,9 @@ export function DevBot() {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-label="Who made this website?"
-        className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#E11D48] bg-ink text-[#FDA4AF] shadow-[0_0_30px_rgba(225,29,72,0.5)] transition hover:bg-[#E11D48] hover:text-white"
+        className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#E11D48] bg-ink text-[#FDA4AF] shadow-[0_0_30px_rgba(225,29,72,0.5)] transition hover:bg-[#E11D48] hover:text-white"
       >
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+        <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           <rect x="5" y="8" width="14" height="11" rx="2" />
           <path d="M12 4v4M9 13h.01M15 13h.01M9 16h6" strokeLinecap="round" />
         </svg>
